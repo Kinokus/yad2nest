@@ -1,4 +1,5 @@
 export class City {
-  id: string;
-  name: string;
+  _id: string // from db
+  id: string // from site
+  name: string
 }

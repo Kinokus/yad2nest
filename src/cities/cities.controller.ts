@@ -19,14 +19,19 @@ import { UpdateStatusesEnum } from './classes/update-statuses.enum';
 import { DeleteStatusesEnum } from './classes/delete-statuses.enum';
 
 import {Response, Request } from 'express'
+import { CitiesService } from './cities.service';
+import { serialize } from 'v8';
 
 @Controller('cities')
 export class CitiesController {
 
+  constructor(private readonly citiesService: CitiesService) {
+
+  }
+
   @Get()
   getCities() {
-
-    return [];
+    return this.citiesService.getAll();
   }
 
   // @Get()
@@ -38,7 +43,7 @@ export class CitiesController {
 
   @Get(':id')
   getOne(@Param('id') id: string): City {
-    return { id, name: '' };
+    return this.citiesService.getOne(id);
   }
 
   // @Get(':id')
@@ -50,11 +55,13 @@ export class CitiesController {
   @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')
   create(@Body() createCityDto: CreateCityDto): CreateCityDto {
-    return { ...createCityDto, status: CreateStatusesEnum.Success };
+    return this.citiesService.create(createCityDto)
   }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
+    // todo use service
     return{
       id, status:DeleteStatusesEnum.Success
     }
@@ -62,6 +69,7 @@ export class CitiesController {
 
   @Put(':id')
   update(@Body() updateCityDto: UpdateCityDto, @Param('id') id: string): UpdateCityDto {
+    // todo use service
     return {
       ...updateCityDto, id, status: UpdateStatusesEnum.Success,
     };
