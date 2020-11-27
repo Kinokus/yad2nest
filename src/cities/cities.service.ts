@@ -1,29 +1,48 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCityDto } from './dto/create-city.dto';
-import { City } from './schemas/city.schema';
+import { City, CityDocument } from './schemas/city.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UpdateCityDto } from './dto/update-city.dto';
 
 
 @Injectable()
 export class CitiesService {
 
-  private cities: City[] = [];
-
-  getAll() {
-    return this.cities;
+  constructor(
+    @InjectModel(City.name) private cityModel: Model<CityDocument>,
+  ) {
   }
 
-  getOne(id: string) {
-    return this.cities.find(c => c.id === id);
+
+
+  getAll(): Promise<City[]> {
+    // return this.cities;
+    return this.cityModel.find().exec();
   }
 
-  create(createCityDto: CreateCityDto) {
-    // todo _id -> UUID
-    const cityObject = { ...createCityDto, _id: Date.now().toString() }
-    this.cities.push(cityObject);
-    return cityObject
+  getOne(id: string): Promise<City> {
+    // return this.cities.find(c => c.id === id);
+    return this.cityModel.findById(id).exec();
   }
 
-  remove() {
-
+  create(createCityDto: CreateCityDto): Promise<City> {
+    const newCity = new this.cityModel(createCityDto);
+    return newCity.save();
   }
+
+
+  async remove(id: string): Promise<City> {
+    return this.cityModel.findByIdAndRemove(id);
+  }
+
+  async update(id: string, updateCityDto: UpdateCityDto): Promise<City> {
+    return this.cityModel.findByIdAndUpdate(
+      id,
+      updateCityDto,
+      { upsert: true, useFindAndModify: false },
+    );
+  }
+
+
 }

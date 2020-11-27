@@ -12,12 +12,8 @@ import {
   Redirect, Req, Res,
 } from '@nestjs/common';
 import { CreateCityDto } from './dto/create-city.dto';
-import { CreateStatusesEnum } from './classes/create-statuses.enum';
 import { UpdateCityDto } from './dto/update-city.dto';
-import { UpdateStatusesEnum } from './classes/update-statuses.enum';
-import { DeleteStatusesEnum } from './classes/delete-statuses.enum';
-
-import {Response, Request } from 'express'
+import { Response, Request } from 'express';
 import { CitiesService } from './cities.service';
 import { serialize } from 'v8';
 import { City } from './schemas/city.schema';
@@ -30,7 +26,7 @@ export class CitiesController {
   }
 
   @Get()
-  getCities() {
+  getCities():Promise<City[]> {
     return this.citiesService.getAll();
   }
 
@@ -42,7 +38,7 @@ export class CitiesController {
   // }
 
   @Get(':id')
-  getOne(@Param('id') id: string): City {
+  getOne(@Param('id') id: string): Promise<City> {
     return this.citiesService.getOne(id);
   }
 
@@ -54,25 +50,26 @@ export class CitiesController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')
-  create(@Body() createCityDto: CreateCityDto): CreateCityDto {
-    return this.citiesService.create(createCityDto)
+  create(@Body() createCityDto: CreateCityDto):  Promise<City> {
+    return this.citiesService.create(createCityDto);
   }
 
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @HttpCode(HttpStatus.GONE)
+  remove(@Param('id') id: string): Promise<City> {
     // todo use service
-    return{
-      id, status:DeleteStatusesEnum.Success
-    }
+    return this.citiesService.remove(id);
   }
 
   @Put(':id')
-  update(@Body() updateCityDto: UpdateCityDto, @Param('id') id: string): UpdateCityDto {
+  @HttpCode(HttpStatus.ACCEPTED)
+  update(
+    @Body() updateCityDto: UpdateCityDto,
+    @Param('id') id: string
+  ) :Promise<City> {
     // todo use service
-    return {
-      ...updateCityDto, id, status: UpdateStatusesEnum.Success,
-    };
+    return this.citiesService.update(id, updateCityDto);
   }
 
 }
