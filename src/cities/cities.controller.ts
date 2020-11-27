@@ -12,7 +12,6 @@ import {
   Redirect, Req, Res,
 } from '@nestjs/common';
 import { CreateCityDto } from './dto/create-city.dto';
-import { City } from './classes/city';
 import { CreateStatusesEnum } from './classes/create-statuses.enum';
 import { UpdateCityDto } from './dto/update-city.dto';
 import { UpdateStatusesEnum } from './classes/update-statuses.enum';
@@ -21,6 +20,7 @@ import { DeleteStatusesEnum } from './classes/delete-statuses.enum';
 import {Response, Request } from 'express'
 import { CitiesService } from './cities.service';
 import { serialize } from 'v8';
+import { City } from './schemas/city.schema';
 
 @Controller('cities')
 export class CitiesController {
