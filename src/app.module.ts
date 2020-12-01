@@ -1,16 +1,23 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
 import { CitiesModule } from './cities/cities.module';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AreasModule } from './areas/areas.module';
+import { SellersModule } from './sellers/sellers.module';
+import { ApartmentsModule } from './apartments/apartments.module';
+import { ApartmentsModule } from './apartments/apartments.module';
 
 @Module({
   // todo: move to config
   imports: [
     CitiesModule,
     MongooseModule.forRoot(`mongodb+srv://userName:userPassword@cluster0.b7fv8.mongodb.net/real-estate?retryWrites=true&w=majority`),
-    AreasModule],
+    AreasModule,
+    SellersModule,
+    ApartmentsModule],
   controllers: [AppController],
   providers: [AppService],
 })

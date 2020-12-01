@@ -30,22 +30,10 @@ export class CitiesController {
     return this.citiesService.getAll();
   }
 
-  // @Get()
-  // // @Redirect('https://google.com', 301)
-  // getCities(@Req() req: Request, @Res() res: Response) {
-  //   res.status(201).end('ppp')
-  //   return [];
-  // }
-
   @Get(':id')
   getOne(@Param('id') id: string): Promise<City> {
     return this.citiesService.getOne(id);
   }
-
-  // @Get(':id')
-  // getOne(@Param() params){
-  //   return {id:params.id}
-  // }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -54,11 +42,10 @@ export class CitiesController {
     return this.citiesService.create(createCityDto);
   }
 
-
   @Delete(':id')
   @HttpCode(HttpStatus.GONE)
   remove(@Param('id') id: string): Promise<City> {
-    // todo use service
+
     return this.citiesService.remove(id);
   }
 
@@ -68,7 +55,7 @@ export class CitiesController {
     @Body() updateCityDto: UpdateCityDto,
     @Param('id') id: string
   ) :Promise<City> {
-    // todo use service
+
     return this.citiesService.update(id, updateCityDto);
   }
 
