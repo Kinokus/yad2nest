@@ -7,8 +7,7 @@ import { UpdateApartmentDto } from './dto/update-apartment.dto';
 @Controller('apartments')
 export class ApartmentsController {
 
-  constructor(private apartmentsService: ApartmentsService) {
-  }
+  constructor(private apartmentsService: ApartmentsService) {  }
 
   @Get()
   getApartments(): Promise<Apartment[]> {
