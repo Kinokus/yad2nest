@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 import { CitiesModule } from './cities/cities.module';
 import { AreasModule } from './areas/areas.module';
 import { SellersModule } from './sellers/sellers.module';
-import { ApartmentsModule } from './apartments/apartments.module';
+import { MiscModule } from './misc/misc.module';
 import { ApartmentsModule } from './apartments/apartments.module';
 
 @Module({
@@ -17,7 +17,8 @@ import { ApartmentsModule } from './apartments/apartments.module';
     MongooseModule.forRoot(`mongodb+srv://userName:userPassword@cluster0.b7fv8.mongodb.net/real-estate?retryWrites=true&w=majority`),
     AreasModule,
     SellersModule,
-    ApartmentsModule],
+    ApartmentsModule,
+    MiscModule],
   controllers: [AppController],
   providers: [AppService],
 })
