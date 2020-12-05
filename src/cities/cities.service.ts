@@ -26,9 +26,17 @@ export class CitiesService {
     return this.cityModel.findById(id).exec();
   }
 
-  create(createCityDto: CreateCityDto): Promise<City> {
-    const newCity = new this.cityModel(createCityDto);
-    return newCity.save();
+  async create(createCityDto: CreateCityDto): Promise<City> {
+    return this.cityModel
+      .findOneAndUpdate(
+        createCityDto,
+        createCityDto,
+        {
+          upsert: true,
+          useFindAndModify: false,
+          new: true
+        },
+      )
   }
 
 

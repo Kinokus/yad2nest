@@ -54,7 +54,9 @@ export class MiscService {
     apartment.area = $(Helpers.selectors.area).text().replace(/,$/, '');
 
     apartment.meters = $(Helpers.selectors.meters).text();
-    apartment.floor = $(Helpers.selectors.floor).text();
+
+    apartment.floor = parseInt($(Helpers.selectors.floor).text()) | -2;
+
     apartment.rooms = $(Helpers.selectors.rooms).text();
 
     apartment.price = $(Helpers.selectors.price).text().replace(/[^0-9]/gim, '');
@@ -68,8 +70,8 @@ export class MiscService {
       const featureName = Functions.snakeToCamel($(el).attr('id'));
 
       // @ts-ignore
-      if (apartment[featureName] === undefined)
-        console.log(featureName);
+      // if (apartment[featureName] === undefined)
+      //   console.log(featureName);
       // @ts-ignore
       apartment[featureName] = true;
     });
@@ -77,8 +79,8 @@ export class MiscService {
     $(Helpers.selectors.featuresAbsent).each((idx: number, el: Element) => {
       const featureName = Functions.snakeToCamel($(el).attr('id'));
       // @ts-ignore
-      if (apartment[featureName] === undefined)
-        console.log(featureName);
+      // if (apartment[featureName] === undefined)
+      //   console.log(featureName);
       // @ts-ignore
       apartment[featureName] = false;
     });
@@ -93,8 +95,8 @@ export class MiscService {
 
 
       // @ts-ignore
-      if (apartment[fieldName] === undefined)
-        console.log(fieldName);
+      // if (apartment[fieldName] === undefined)
+      //   console.log(fieldName);
 
       // @ts-ignore
       apartment[fieldName] = fieldValue;
@@ -127,6 +129,7 @@ export class MiscService {
     apartment.apartmentId = apartmentId;
 
 
+
     // console.log(apartment);
     // const dbResp =
     //   ApartmentModel.updateOne(
@@ -149,6 +152,7 @@ export class MiscService {
   async getNewIds(apartmentIds: string[]) {
 
     return this.apartmentsService.getNewIds(apartmentIds)
+
 
 
     // const apartmentIdFound = await ApartmentModel

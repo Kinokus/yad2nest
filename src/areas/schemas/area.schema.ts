@@ -8,10 +8,12 @@ export class Area {
   name: string
 
   @Prop()
-  id: string
+  id?: string
+  @Prop()
+  _id?: string
 
   @Prop()
-  cityId: string
+  cityId?: string
 
 }
 

@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Apartment, ApartmentSchema } from './schemas/apartment.schema';
 import { CitiesModule } from '../cities/cities.module';
 import { AreasModule } from '../areas/areas.module';
+import { SellersModule } from '../sellers/sellers.module';
 
 @Module({
   controllers: [ApartmentsController],
@@ -18,7 +19,9 @@ import { AreasModule } from '../areas/areas.module';
       ],
     ),
     CitiesModule,
-    AreasModule],
+    AreasModule,
+    SellersModule,
+  ],
   providers: [ApartmentsService],
   exports: [ApartmentsService],
 

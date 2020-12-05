@@ -14,6 +14,7 @@ import { Seller, SellerSchema } from './schemas/seller.schema';
       },
     ],
   )],
+  exports: [SellersService],
 })
 export class SellersModule {
 

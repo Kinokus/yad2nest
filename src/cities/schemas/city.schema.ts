@@ -9,7 +9,10 @@ export class City {
   name: string
 
   @Prop()
-  id: string
+  id?: string
+
+  @Prop()
+  _id?: string
 
 }
 

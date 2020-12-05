@@ -14,9 +14,17 @@ export class SellersService {
     return this.sellerModel.find().exec();
   }
 
-  create(createSellerDto: CreateSellerDto): Promise<Seller> {
-    const newSeller = new this.sellerModel(createSellerDto);
-    return newSeller.save();
+  async create(createSellerDto: CreateSellerDto): Promise<Seller> {
+    return this.sellerModel.findOneAndUpdate(
+      createSellerDto,
+      createSellerDto,
+      {
+
+        upsert: true,
+        useFindAndModify: false,
+        new: true
+      },
+    );
   }
 
   getOne(id: string): Promise<Seller> {
