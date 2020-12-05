@@ -10,6 +10,7 @@ import { AreasController } from './areas.controller';
   imports: [MongooseModule.forFeature([
     { name: Area.name, schema: AreaSchema },
   ])],
+  exports:[AreasService]
 })
 export class AreasModule {
 }
