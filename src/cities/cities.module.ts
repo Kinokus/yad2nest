@@ -10,6 +10,7 @@ import { City, CitySchema } from './schemas/city.schema';
   imports: [MongooseModule.forFeature([
     { name: City.name, schema: CitySchema },
   ])],
+  exports:[CitiesService]
 
 
 })
