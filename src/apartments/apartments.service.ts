@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { DocumentQuery, Model } from 'mongoose';
 
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 import { UpdateApartmentDto } from './dto/update-apartment.dto';
@@ -27,20 +27,17 @@ export class ApartmentsService {
 
   async create(createApartmentDto: CreateApartmentDto): Promise<Apartment> {
     const newCity = await this.citiesService.create({ name: createApartmentDto.city });
-
-
+    const newArea = await this.areasService.create({
+      name: createApartmentDto.area,
+      cityId: newCity._id,
+    });
     const sellerPayload = {
       name: createApartmentDto.sellerName,
       phone1: createApartmentDto.sellerPhone1,
       phone2: createApartmentDto.sellerPhone2,
       isBroker: createApartmentDto.viaMakler,
-    }
+    };
     const newSeller = await this.sellersService.create(sellerPayload);
-
-    const newArea = await this.areasService.create({
-      name: createApartmentDto.area,
-      cityId: newCity._id,
-    });
 
     if (!newArea || !newCity || !newSeller) {
       console.error('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
@@ -62,19 +59,21 @@ export class ApartmentsService {
     createApartmentDto.areaId = newArea._id;
     createApartmentDto.sellerId = newSeller._id;
 
+    const apartmentSearchPayload = {
+      apartmentId: createApartmentDto.apartmentId,
+      cityId: createApartmentDto.cityId,
+      areaId: createApartmentDto.areaId,
+      sellerId: createApartmentDto.sellerId,
+    };
+
     return this.apartmentModel
       .findOneAndUpdate(
-        {
-          apartmentId: createApartmentDto.apartmentId,
-          cityId: createApartmentDto.cityId,
-          areaId: createApartmentDto.areaId,
-          sellerId: createApartmentDto.sellerId,
-        },
+        apartmentSearchPayload,
         createApartmentDto,
         {
           upsert: true,
           useFindAndModify: false,
-          new: true
+          new: true,
         },
       )
       .exec();
@@ -105,10 +104,16 @@ export class ApartmentsService {
       return (apartmentIdFound.indexOf(ai) === -1);
     });
 
-    // console.log(apartmentIdsFiltered);
-
     return apartmentIdsFiltered;
 
 
+  }
+
+  getApartmentsByAreaId(id: string){
+    return this.apartmentModel.find({ areaId: id });
+  }
+
+  getApartmentsByCityId(id: string) {
+    return this.apartmentModel.find({ cityId: id });
   }
 }

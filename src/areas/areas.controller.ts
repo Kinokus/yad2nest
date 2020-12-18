@@ -2,8 +2,6 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put }
 import { Area } from './schemas/area.schema';
 import { AreasService } from './areas.service';
 import { CreateAreaDto } from './dto/create-area.dto';
-import { City } from '../cities/schemas/city.schema';
-import { UpdateCityDto } from '../cities/dto/update-city.dto';
 import { UpdateAreaDto } from './dto/update-area.dto';
 
 @Controller('areas')
@@ -20,6 +18,11 @@ export class AreasController {
   @Get(':id')
   getOne(@Param('id') id: string):Promise<Area>{
     return this.areasService.getOne(id)
+  }
+
+  @Get('city/:id')
+  getByCityId(@Param('id') id: string){
+    return this.areasService.getByCityId(id)
   }
 
 

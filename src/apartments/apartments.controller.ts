@@ -3,6 +3,7 @@ import { Apartment } from './schemas/apartment.schema';
 import { ApartmentsService } from './apartments.service';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 import { UpdateApartmentDto } from './dto/update-apartment.dto';
+import { DocumentQuery } from 'mongoose';
 
 @Controller('apartments')
 export class ApartmentsController {
@@ -17,6 +18,16 @@ export class ApartmentsController {
   @Get(':id')
   getOne(@Param('id') id: string):Promise<Apartment>{
     return this.apartmentsService.getOne(id)
+  }
+
+  @Get('area/:id')
+  getApartmentsByAreaId(@Param('id') id: string){
+    return this.apartmentsService.getApartmentsByAreaId(id)
+  }
+
+  @Get('city/:id')
+  getApartmentsByCityId(@Param('id') id: string){
+    return this.apartmentsService.getApartmentsByCityId(id)
   }
 
 

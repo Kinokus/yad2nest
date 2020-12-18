@@ -39,4 +39,9 @@ export class AreasService {
   async update(id: string, updateAreaDto: UpdateAreaDto) {
     return this.areaModel.findByIdAndUpdate(id, updateAreaDto, { upsert: true, useFindAndModify: false });
   }
+
+  getByCityId(id: string) {
+    return this.areaModel.find({cityId:id})
+    // return Promise.resolve(undefined);
+  }
 }

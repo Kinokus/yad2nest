@@ -24,6 +24,16 @@ export class MiscController {
     return 'ok';
   }
 
+  @Post('raw-json')
+  parseRawJson(@Body() rawJson: any) {
+    return this.miscService.parseRawJson(rawJson);
+  }
+
+  @Options('raw-json')
+  optionsRawJson() {
+    return 'ok';
+  }
+
   @Post('check')
   checkApartments(@Body() citiesIdsDto: CitiesIdsDto) {
     const apartmentIds = citiesIdsDto.ids;

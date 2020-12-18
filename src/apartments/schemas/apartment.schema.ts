@@ -13,7 +13,7 @@ export class Apartment {
   @Prop() areaId: string;
   @Prop() sellerId: string;
   @Prop() airConditioner: boolean = null;
-  @Prop() arnona: number = -2;
+  @Prop() arnona: number = null;
   @Prop() forPartners: boolean = null;
   @Prop() kosherKitchen: boolean = null;
   @Prop() elevator: boolean = null;
@@ -29,11 +29,11 @@ export class Apartment {
   @Prop() cityArea: string = '';
   @Prop() city: string = '';
   @Prop() area: string = '';
-  @Prop() rooms: number = -2;
-  @Prop() balconies: number = -2;
-  @Prop() floor: number = -2;
-  @Prop() meters: number = -2;
-  @Prop() price: number = -2;
+  @Prop() rooms: number = null;
+  @Prop() balconies: number = null;
+  @Prop() floor: number = null;
+  @Prop() meters: number = null;
+  @Prop() price: number = null;
   @Prop() description: string = '';
   @Prop({type: String, required: false}) dateOfEntrance;
   @Prop() sellerName: string = '';
@@ -53,14 +53,14 @@ export class Apartment {
   @Prop() pets: boolean = false;
   @Prop() furniture: boolean = false;
   @Prop({type: String, required: false}) entryDate;
-  @Prop() houseCommittee: number = -2;
-  @Prop() totalFloors: number = -2;
-  @Prop() numberPayments: number = -2;
-  @Prop() parking: number = -2;
-  @Prop() levelQuietOnStreet: number = -2;
-  @Prop() streetParking: number = -2;
-  @Prop() proximityCommercialServices: number = -2;
-  @Prop() accessibilityPublicTransportation: number = -2;
+  @Prop() houseCommittee: number = null;
+  @Prop() totalFloors: number = null;
+  @Prop() numberPayments: number = null;
+  @Prop() parking: number = null;
+  @Prop() levelQuietOnStreet: number = null;
+  @Prop() streetParking: number = null;
+  @Prop() proximityCommercialServices: number = null;
+  @Prop() accessibilityPublicTransportation: number = null;
   @Prop() exclusiveProperty: boolean = false;
   @Prop() propertyCondition: string = '';
   // 'id':''
@@ -68,6 +68,7 @@ export class Apartment {
   @Prop() message: string = '';
   @Prop() video: string = '';
   @Prop() entrance: string = '';
+  // @Prop() entrance: string = '';
 
 
 }

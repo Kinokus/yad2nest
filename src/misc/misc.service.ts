@@ -54,10 +54,9 @@ export class MiscService {
     apartment.area = $(Helpers.selectors.area).text().replace(/,$/, '');
 
     apartment.meters = $(Helpers.selectors.meters).text();
-
-    apartment.floor = parseInt($(Helpers.selectors.floor).text()) | -2;
-
+    apartment.floor = $(Helpers.selectors.floor).text().replace(/[^0-9]/gim, '');
     apartment.rooms = $(Helpers.selectors.rooms).text();
+
 
     apartment.price = $(Helpers.selectors.price).text().replace(/[^0-9]/gim, '');
     apartment.price = !!apartment.price ? apartment.price : null;
@@ -167,6 +166,11 @@ export class MiscService {
     // // res.send(JSON.stringify(apartmentIds))
     // res.send(JSON.stringify(apartmentIdsFiltered))
     // logger.info(`${apartmentIdsFiltered.length} - ${apartmentIds.length}`)
+
+  }
+
+  parseRawJson(rawJson) {
+    console.log(rawJson);
 
   }
 }
