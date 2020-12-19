@@ -1,19 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-export type AreaDocument = Area & Document
+export type HoodDocument = Hood & Document
+
 
 @Schema()
-export class Area {
+export class Hood {
   @Prop()
   name: string
-
-  @Prop()
-  areaId: string
-
-  @Prop()
-  topAreaId: string
-
-
 
   @Prop()
   id?: string
@@ -23,4 +16,4 @@ export class Area {
 
 }
 
-export const AreaSchema = SchemaFactory.createForClass(Area)
+export const HoodSchema = SchemaFactory.createForClass(Hood)

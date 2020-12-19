@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Coordinates } from './coordinates';
 
 export type ApartmentDocument = Apartment & Document
 
@@ -7,12 +8,20 @@ export type ApartmentDocument = Apartment & Document
 export class Apartment {
   // todo: maybe address will be separated street/house/apartment etc...
   @Prop() name: string;
-  @Prop() address: string;
+  @Prop() street: string;
+  @Prop() homeNumber: string;
   @Prop() id: string;
-  @Prop() cityId: string;
+
+
+
+  @Prop() topAreaId: string;
   @Prop() areaId: string;
-  @Prop() sellerId: string;
+  @Prop() cityId: string;
+  @Prop() hoodId: string;
+
   @Prop() airConditioner: boolean = null;
+  @Prop() airConditionerTadiran: boolean = null;
+
   @Prop() arnona: number = null;
   @Prop() forPartners: boolean = null;
   @Prop() kosherKitchen: boolean = null;
@@ -22,7 +31,7 @@ export class Apartment {
   @Prop() pandorDoors: boolean = null;
   @Prop() tadiranC: boolean = null;
   @Prop() viaMakler: boolean = null;
-  @Prop() updated: string = '';
+  @Prop() updated: Date  = null;
   @Prop() about: string = '';
   @Prop() apartmentId: string = '';
   @Prop() summary: string = '';
@@ -68,6 +77,9 @@ export class Apartment {
   @Prop() message: string = '';
   @Prop() video: string = '';
   @Prop() entrance: string = '';
+  @Prop({type: Coordinates}) coordinates = null;
+
+  @Prop() sellerId: string;
   // @Prop() entrance: string = '';
 
 

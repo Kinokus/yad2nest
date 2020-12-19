@@ -9,15 +9,21 @@ import { Apartment, ApartmentDocument } from './schemas/apartment.schema';
 import { CitiesService } from '../cities/cities.service';
 import { AreasService } from '../areas/areas.service';
 import { SellersService } from '../sellers/sellers.service';
+import { TopArea } from '../topAreas/schemas/topArea.schema';
+import { Area } from '../areas/schemas/area.schema';
+import { Hood } from '../hoods/schemas/hood.schema';
 
 
 @Injectable()
 export class ApartmentsService {
   constructor(
     @InjectModel(Apartment.name) private apartmentModel: Model<ApartmentDocument>,
-    private citiesService: CitiesService,
-    private areasService: AreasService,
-    private sellersService: SellersService,
+    // @InjectModel(TopArea.name) private topAreaModel: Model<ApartmentDocument>,
+    // @InjectModel(Area.name) private areaModel: Model<ApartmentDocument>,
+    // @InjectModel(Hood.name) private hoodModel: Model<ApartmentDocument>,
+    // private citiesService: CitiesService,
+    // private areasService: AreasService,
+    // private sellersService: SellersService,
   ) {
   }
 
@@ -26,46 +32,51 @@ export class ApartmentsService {
   }
 
   async create(createApartmentDto: CreateApartmentDto): Promise<Apartment> {
-    const newCity = await this.citiesService.create({ name: createApartmentDto.city });
-    const newArea = await this.areasService.create({
-      name: createApartmentDto.area,
-      cityId: newCity._id,
-    });
-    const sellerPayload = {
-      name: createApartmentDto.sellerName,
-      phone1: createApartmentDto.sellerPhone1,
-      phone2: createApartmentDto.sellerPhone2,
-      isBroker: createApartmentDto.viaMakler,
-    };
-    const newSeller = await this.sellersService.create(sellerPayload);
 
-    if (!newArea || !newCity || !newSeller) {
-      console.error('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
-      console.error('\nnewArea');
-      console.error(newArea);
 
-      console.error('\nnewCity');
-      console.error(newCity);
+    // createApartmentDto.coordinates = { latitude: '32.026152', longitude: '34.765384' }
 
-      console.error('\nnewSeller');
-      console.error(sellerPayload);
-      console.error(newSeller);
-      console.error('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-      return;
-    }
-
-    createApartmentDto.cityId = newCity._id;
-    createApartmentDto.areaId = newArea._id;
-    createApartmentDto.sellerId = newSeller._id;
-
+    return null
+    // const newCity = await this.citiesService.create({ name: createApartmentDto.city });
+    // const newArea = await this.areasService.create({
+    //   name: createApartmentDto.area,
+    //   // cityId: newCity._id,
+    // });
+    // const sellerPayload = {
+    //   name: createApartmentDto.sellerName,
+    //   phone1: createApartmentDto.sellerPhone1,
+    //   phone2: createApartmentDto.sellerPhone2,
+    //   isBroker: createApartmentDto.viaMakler,
+    // };
+    // const newSeller = await this.sellersService.create(sellerPayload);
+    //
+    // if (!newArea || !newCity || !newSeller) {
+    //   console.error('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+    //
+    //   console.error('\nnewArea');
+    //   console.error(newArea);
+    //
+    //   console.error('\nnewCity');
+    //   console.error(newCity);
+    //
+    //   console.error('\nnewSeller');
+    //   console.error(sellerPayload);
+    //   console.error(newSeller);
+    //   console.error('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+    //   return;
+    // }
+    //
+    // createApartmentDto.cityId = newCity._id;
+    // createApartmentDto.areaId = newArea._id;
+    // createApartmentDto.sellerId = newSeller._id;
+    //
     const apartmentSearchPayload = {
       apartmentId: createApartmentDto.apartmentId,
       cityId: createApartmentDto.cityId,
       areaId: createApartmentDto.areaId,
-      sellerId: createApartmentDto.sellerId,
     };
-
+    //
     return this.apartmentModel
       .findOneAndUpdate(
         apartmentSearchPayload,

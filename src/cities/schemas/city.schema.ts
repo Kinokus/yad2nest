@@ -9,6 +9,15 @@ export class City {
   name: string
 
   @Prop()
+  cityId: string
+
+  @Prop()
+  areaId: string
+
+  @Prop()
+  topAreaId: string
+
+  @Prop()
   id?: string
 
   @Prop()

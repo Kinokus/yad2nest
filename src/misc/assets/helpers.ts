@@ -69,4 +69,8 @@ export class Helpers {
 
   };
 
+  static fieldNamesTranslation = {
+
+  }
+
 }

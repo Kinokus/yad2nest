@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Apartment } from '../apartments/schemas/apartment.schema';
+import { Apartment, ApartmentDocument } from '../apartments/schemas/apartment.schema';
 import { Functions } from './assets/functions';
 import { Helpers } from './assets/helpers';
 import { ApartmentsService } from '../apartments/apartments.service';
 import { FullHtmlDto } from './dto/full-html.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { TopArea, TopAreaDocument } from '../topAreas/schemas/topArea.schema';
+import { Area, AreaDocument } from '../areas/schemas/area.schema';
+import { Hood, HoodDocument } from '../hoods/schemas/hood.schema';
+import { City, CityDocument } from '../cities/schemas/city.schema';
 
 
 const cheerio = require('cheerio');
@@ -11,7 +17,14 @@ const cheerio = require('cheerio');
 @Injectable()
 export class MiscService {
 
-  constructor(private apartmentsService: ApartmentsService) {
+  constructor(
+    private apartmentsService: ApartmentsService,
+    @InjectModel(Apartment.name) private apartmentModel: Model<ApartmentDocument>,
+    @InjectModel(TopArea.name) private topAreaModel: Model<TopAreaDocument>,
+    @InjectModel(Area.name) private areaModel: Model<AreaDocument>,
+    @InjectModel(Hood.name) private hoodModel: Model<HoodDocument>,
+    @InjectModel(City.name) private cityModel: Model<CityDocument>,
+  ) {
   }
 
   // create(createMiscDto: CreateMiscDto) {
@@ -34,7 +47,7 @@ export class MiscService {
   //   return `This action removes a #${id} misc`;
   // }
 
-  async parseFullHtml( fullHtml: FullHtmlDto ) {
+  async parseFullHtml(fullHtml: FullHtmlDto) {
 
     // console.log(fullHtml);
 
@@ -50,7 +63,7 @@ export class MiscService {
 
 
     apartment.city = $(Helpers.selectors.city).text();
-    apartment.address = $(Helpers.selectors.address).text();
+    // apartment.address = $(Helpers.selectors.address).text();
     apartment.area = $(Helpers.selectors.area).text().replace(/,$/, '');
 
     apartment.meters = $(Helpers.selectors.meters).text();
@@ -128,7 +141,6 @@ export class MiscService {
     apartment.apartmentId = apartmentId;
 
 
-
     // console.log(apartment);
     // const dbResp =
     //   ApartmentModel.updateOne(
@@ -138,20 +150,20 @@ export class MiscService {
 
     // console.log(dbResp);
 
-    const newApartment = await this.apartmentsService.create(apartment);
+    // const newApartment = await this.apartmentsService.create(apartment);
     // console.log(newApartment);
 
     // todo: return URL of apartment
     // todo: return status
     // todo: new dto
 
-    return { status: 'ok', apartment: newApartment };
+    return { status: 'ok' };
+    // return { status: 'ok', apartment: newApartment };
   }
 
   async getNewIds(apartmentIds: string[]) {
 
-    return this.apartmentsService.getNewIds(apartmentIds)
-
+    // return this.apartmentsService.getNewIds(apartmentIds);
 
 
     // const apartmentIdFound = await ApartmentModel
@@ -170,7 +182,138 @@ export class MiscService {
   }
 
   parseRawJson(rawJson) {
-    console.log(rawJson);
+
+    const address = rawJson.address;
+    console.log(address);
+    const apartments = rawJson.feed.feed_items;
+    apartments.filter(apt => apt.type === 'ad').forEach(async (apt) => {
+
+      const apartment: Apartment = new Apartment();
+
+      console.log(apt);
+      apartment.coordinates = apt.coordinates;
+
+      const imgKeys = apt.imanges ? Object.keys(apt.imanges) : null;
+      const imgSrcs = imgKeys?.map(ik => apt.imanges[ik].src);
+      apartment.images = imgSrcs;
+
+      apartment.viaMakler = apt.merchant;
+      apartment.apartmentId = apt.link_token;
+      apartment.video = apt.video_url;
+
+      const upadtedSplitted = apt.updated_at.replace(/[^0-9\/]/gim, '')?.split('/');
+      apartment.updated = upadtedSplitted ? new Date(upadtedSplitted[2], upadtedSplitted[1] - 1, upadtedSplitted[0]) : new Date();
+      // apartment.updated = apartment.updated?apartment.updated:new Date()
+      // console.log(apartment);
+      apartment.price = apt.price.replace(/[^0-9]/gim, '');
+
+      //city_code:
+
+      const topArea = await this.topAreaModel
+        .findOneAndUpdate({
+            name: address.topArea.name,
+          },
+          {
+            name: address.topArea.name,
+            topAreaId: address.topArea.id,
+          },
+          {
+            upsert: true,
+            useFindAndModify: false,
+            new: true,
+          });
+      // console.log(topArea);
+
+      const area = await this.areaModel
+        .findOneAndUpdate({
+            name: apt.AreaID_text,
+          },
+          {
+            name: apt.AreaID_text,
+            areaId: apt.area_id,
+            topAreaId: topArea._id,
+          },
+          {
+            upsert: true,
+            useFindAndModify: false,
+            new: true,
+          });
+
+
+      const city = await this.cityModel
+        .findOneAndUpdate({
+            name: apt.city,
+          },
+          {
+            name: apt.city,
+            cityId: apt.city_code,
+            areaId: area._id,
+            topAreaId: topArea._id,
+          },
+          {
+            upsert: true,
+            useFindAndModify: false,
+            new: true,
+          });
+
+
+      
+      const hood = await this.hoodModel
+        .findOneAndUpdate(
+          {
+            name: apt. neighborhood,
+          },
+          {
+            name: apt. neighborhood,
+            hoodId: apt.hood_id,
+            cityId: city._id,
+            areaId: area._id,
+            topAreaId: topArea._id
+          },
+          {
+            upsert: true,
+            useFindAndModify: false,
+            new: true,
+          },
+        );
+
+      // this.topAreaModel.updateOne({
+      //   name:apt.topAreaID_text,
+      //   code:apt.
+      //
+      // })
+      //
+      //
+      // this.cityModel.updateOne({
+      //   name:apt.city,
+      //
+      // })
+      //
+      //
+    });
+
+
+    // console.log(JSON.stringify(rawJson));
+    // console.log(rawJson.address);
+    // console.log(
+    //   rawJson
+    //     .feed
+    //     .feed_items
+    //     .filter(fi=>fi.type!=='advanced_ad')
+    //     .filter(fi=>fi.type!=='agency_buttons')
+    //     .map(fi=>Object.keys(fi).filter(fik=>fik.includes('_text')).sort().join(" "))
+    //   [0]
+    // );
+    // console.log('\n------\n')
+    // console.log(
+    //   rawJson
+    //     .feed
+    //     .feed_items
+    //     .filter(fi=>fi.type!=='advanced_ad')
+    //     .filter(fi=>fi.type!=='agency_buttons')
+    //     .map(fi=>Object.keys(fi).filter(fik=>!fik.includes('_text')).sort().join(" "))
+    //   [0]
+    // );
 
   }
 }

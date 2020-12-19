@@ -1,3 +1,4 @@
 import { Apartment } from '../schemas/apartment.schema';
+export class CreateApartmentDto extends Apartment{
 
-export class CreateApartmentDto extends Apartment{}
+}
