@@ -11,6 +11,8 @@ import { MiscModule } from './misc/misc.module';
 import { ApartmentsModule } from './apartments/apartments.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { HoodsModule } from './hoods/hoods.module';
+
 
 
 @Module({
@@ -23,8 +25,9 @@ import { join } from 'path';
     ApartmentsModule,
     MiscModule,
     ServeStaticModule.forRoot({ rootPath: join(__dirname, '..', 'client') }),
+    HoodsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, ],
   providers: [AppService],
 })
 

@@ -25,6 +25,11 @@ export class ApartmentsController {
     return this.apartmentsService.getApartmentsByAreaId(id)
   }
 
+  @Get('hood/:id')
+  getApartmentsByHoodId(@Param('id') id: string){
+    return this.apartmentsService.getApartmentsByHoodId(id)
+  }
+
   @Get('city/:id')
   getApartmentsByCityId(@Param('id') id: string){
     return this.apartmentsService.getApartmentsByCityId(id)

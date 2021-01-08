@@ -125,6 +125,11 @@ export class ApartmentsService {
   }
 
   getApartmentsByCityId(id: string) {
+    console.log(id);
     return this.apartmentModel.find({ cityId: id });
+  }
+
+  getApartmentsByHoodId(id: string) {
+    return this.apartmentModel.find({ hoodId: id });
   }
 }

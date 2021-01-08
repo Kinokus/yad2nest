@@ -12,12 +12,15 @@ export class Apartment {
   @Prop() homeNumber: string;
   @Prop() id: string;
 
-
-
   @Prop() topAreaId: string;
   @Prop() areaId: string;
   @Prop() cityId: string;
   @Prop() hoodId: string;
+
+  @Prop() topArea: string;
+  // @Prop() area: string;
+  // @Prop() city: string;
+  @Prop() hood: string;
 
   @Prop() airConditioner: boolean = null;
   @Prop() airConditionerTadiran: boolean = null;
@@ -31,7 +34,7 @@ export class Apartment {
   @Prop() pandorDoors: boolean = null;
   @Prop() tadiranC: boolean = null;
   @Prop() viaMakler: boolean = null;
-  @Prop() updated: Date  = null;
+  @Prop() updated: Date = null;
   @Prop() about: string = '';
   @Prop() apartmentId: string = '';
   @Prop() summary: string = '';
@@ -44,7 +47,7 @@ export class Apartment {
   @Prop() meters: number = null;
   @Prop() price: number = null;
   @Prop() description: string = '';
-  @Prop({type: String, required: false}) dateOfEntrance;
+  @Prop({ type: String, required: false }) dateOfEntrance;
   @Prop() sellerName: string = '';
   @Prop() sellerPhone1: string = '';
   @Prop() sellerPhone2: string = '';
@@ -61,11 +64,11 @@ export class Apartment {
   @Prop() storage: boolean = false;
   @Prop() pets: boolean = false;
   @Prop() furniture: boolean = false;
-  @Prop({type: String, required: false}) entryDate;
+  @Prop({ type: Date, required: false }) entryDate;
   @Prop() houseCommittee: number = null;
   @Prop() totalFloors: number = null;
   @Prop() numberPayments: number = null;
-  @Prop() parking: number = null;
+  @Prop() parking: boolean = null;
   @Prop() levelQuietOnStreet: number = null;
   @Prop() streetParking: number = null;
   @Prop() proximityCommercialServices: number = null;
@@ -77,10 +80,18 @@ export class Apartment {
   @Prop() message: string = '';
   @Prop() video: string = '';
   @Prop() entrance: string = '';
-  @Prop({type: Coordinates}) coordinates = null;
+  @Prop({ type: Coordinates }) coordinates = null;
 
   @Prop() sellerId: string;
   // @Prop() entrance: string = '';
+  @Prop() urgentEntrance: boolean;
+  @Prop() added: Date;
+  @Prop() mamad: boolean;
+  @Prop() sunpatio: boolean;
+  @Prop() columns: boolean;
+  @Prop() storeroom: boolean;
+  @Prop() communal: boolean;
+  @Prop() patio: boolean;
 
 
 }

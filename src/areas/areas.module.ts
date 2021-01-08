@@ -7,9 +7,9 @@ import { AreasController } from './areas.controller';
 @Module({
   providers: [AreasService],
   controllers: [AreasController],
-  imports: [MongooseModule.forFeature([
-    { name: Area.name, schema: AreaSchema },
-  ])],
+  imports: [
+    MongooseModule.forFeature([    { name: Area.name, schema: AreaSchema },  ])
+  ],
   exports:[AreasService]
 })
 export class AreasModule {

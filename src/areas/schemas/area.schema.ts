@@ -13,8 +13,6 @@ export class Area {
   @Prop()
   topAreaId: string
 
-
-
   @Prop()
   id?: string
 

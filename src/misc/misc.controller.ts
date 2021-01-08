@@ -29,6 +29,11 @@ export class MiscController {
     return this.miscService.parseRawJson(rawJson);
   }
 
+  @Post('full-raw-json')
+  parseFullRawJson(@Body() fullRawJson: any) {
+    return this.miscService.parseFullRawJson(fullRawJson);
+  }
+
   @Options('raw-json')
   optionsRawJson() {
     return 'ok';

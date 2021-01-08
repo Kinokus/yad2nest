@@ -12,6 +12,18 @@ export class Hood {
   id?: string
 
   @Prop()
+  hoodId: string
+
+  @Prop()
+  cityId: string
+
+  @Prop()
+  areaId: string
+
+  @Prop()
+  topAreaId: string
+
+  @Prop()
   _id?: string
 
 }
